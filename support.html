@@ -1,198 +1,86 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth dark">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Support & FAQ — GagaEmu</title>
-  <meta name="description" content="Help center, setup instructions, and frequently asked questions for the GagaEmu retro console emulator on iOS.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace'],
-          },
-          colors: {
-            brand: {
-              50: '#eef2ff',
-              400: '#818cf8',
-              500: '#6366f1',
-              600: '#4f46e5',
-              accent: '#06b6d4',
-            }
-          }
-        }
-      }
-    }
-  </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support · GagaEmu</title>
+<meta name="description" content="Help with GagaEmu: adding games, BIOS files, controllers, saves, GagaEmu Pro and reporting a problem.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="GagaEmu Support">
+<meta property="og:description" content="Answers to common questions, and how to report a problem.">
+<meta property="og:url" content="https://zenithblue-oss.github.io/gaga-emu-site/support.html">
+<meta property="og:image" content="https://zenithblue-oss.github.io/gaga-emu-site/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-[#0b0f19] text-slate-100 font-sans antialiased selection:bg-brand-500 selection:text-white">
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="img/favicon-32.png" srcset="img/apple-touch-icon.png 2x" alt="" width="30" height="30">GagaEmu</a>
+    <nav aria-label="Main">
+      <a href="./">Home</a>
+      <a href="support.html" aria-current="page">Support</a>
+      <a href="privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
 
-  <!-- Header -->
-  <header class="sticky top-0 z-50 backdrop-blur-md bg-[#0b0f19]/80 border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-brand-accent flex items-center justify-center shadow-lg shadow-brand-500/20">
-          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" /></svg>
-        </div>
-        <span class="text-xl font-bold tracking-tight text-white">Gaga<span class="text-brand-400">Emu</span></span>
-      </a>
+<main id="main" class="doc">
+  <div class="wrap">
+    <p class="meta">Help</p>
+    <h1 class="tick">Support</h1>
+    <p class="lede">Answers to common questions. If yours is not here, see <a href="#contact">Contact</a> at the end.</p>
 
-      <nav class="flex items-center gap-6 text-sm font-medium text-slate-300">
-        <a href="index.html" class="hover:text-white transition">Home</a>
-        <a href="anti-piracy.html" class="hover:text-white transition">Anti-Piracy</a>
-        <a href="privacy.html" class="hover:text-white transition">Privacy</a>
-        <a href="support.html" class="text-brand-400 font-semibold">Support & FAQ</a>
-      </nav>
+    <h2>Getting started</h2>
+    <details><summary>Why is my library empty?</summary><p>GagaEmu ships with no games, ROMs or BIOS. Add homebrew or backups of cartridges and discs you own. GagaEmu does not sell, link to or help you obtain games.</p></details>
+    <details><summary>How do I add games?</summary>
+      <ul>
+        <li>Open Add and choose from Files, or drop files onto the Add screen.</li>
+        <li>Copy files into the GagaEmu folder with the Files app (On My iPhone or On My iPad).</li>
+        <li>Turn on WiFi Transfer and open the address it shows in a browser on the same network. It is off by default and its traffic is unencrypted.</li>
+        <li>Connect your own WebDAV or RomM server from the Add screen.</li>
+      </ul>
+      <p>Zip archives are unpacked on import. Multi-Disc Helper joins disc files into one playlist.</p>
+    </details>
+    <details><summary>A system asks for a BIOS file. Where do I get it?</summary><p>You supply BIOS files yourself, dumped from hardware you own. GagaEmu does not include or link to any. Settings shows the status of each core.</p></details>
+    <details><summary>How do I apply a patch or ROM hack?</summary><p>Use Patch a ROM on the Add screen. It applies an IPS, UPS or BPS patch to a copy, and leaves the original untouched.</p></details>
+
+    <h2>Playing</h2>
+    <details><summary>Which controllers work?</summary><p>Game controllers supported by iOS, including MFi, DualShock 4, DualSense, Xbox and Joy-Con controllers, and hardware keyboards. You can map every button, with turbo and macros.</p></details>
+    <details><summary>Can I change the touch controls?</summary><p>Yes. Move, resize and fade every button, pick a built-in skin such as Low Reach or Two Button, or import a .deltaskin layout.</p></details>
+    <details><summary>Why does a game run slowly?</summary><p>Every core is an interpreter with no JIT, so speed depends on your device and the game. 3D systems need a recent device, and some cores need an A14 chip or newer. GagaEmu is in early development and we make no promise that any particular title will run.</p></details>
+    <details><summary>Where are my saves?</summary><p>Save states and game saves are in the app's storage on your device, and in the Files app under On My iPhone or On My iPad. Manage them from the pause menu or Settings. With GagaEmu Pro you can sync them through iCloud.</p></details>
+
+    <h2>GagaEmu Pro</h2>
+    <details><summary>What does Pro add?</summary><p>Fast forward above 2x, more than 4 save states and 5 cheats per game, players 3 and 4, the full filter catalogue, iCloud sync, and extra app icons and accent colours. Every system and core is free without it.</p></details>
+    <details><summary>How do I restore a purchase?</summary><p>Open Settings &gt; GagaEmu Pro and tap Restore Purchases, signed in with the same Apple Account you bought with.</p></details>
+    <details><summary>How do I cancel a subscription or ask for a refund?</summary><p>Apple handles both. Manage subscriptions in the Settings app under your name &gt; Subscriptions. Ask for a refund at reportaproblem.apple.com. Nothing you made is removed if Pro ends.</p></details>
+
+    <h2>About</h2>
+    <details><summary>Is GagaEmu open source?</summary><p>Yes, under the GNU Affero General Public License 3.0. Bundled cores keep their own licences, listed in Settings &gt; About &gt; Licences. <a href="https://github.com/zenithblue-oss/gaga-emu">Source code</a>.</p></details>
+    <details><summary>Does GagaEmu collect data?</summary><p>No accounts, analytics, advertising or tracking. See the <a href="privacy.html">privacy policy</a>.</p></details>
+
+    <h2 id="contact">Contact</h2>
+    <div class="card">
+      <p>Report a bug or ask a question by opening an issue on <a href="https://github.com/zenithblue-oss/gaga-emu-site/issues">GitHub</a>. Include your device, iOS version and the system you were playing. You can attach the session log from Settings.</p>
+      <p>Issues are public. Do not attach games, BIOS files or personal details.</p>
     </div>
-  </header>
+  </div>
+</main>
 
-  <!-- Hero -->
-  <section class="pt-14 pb-12 border-b border-slate-800 bg-gradient-to-b from-slate-900/50 to-transparent">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-mono uppercase tracking-wider mb-4">
-        Documentation & Help
-      </div>
-      <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">How can we help?</h1>
-      <p class="mt-4 text-slate-400 text-sm sm:text-base max-w-xl mx-auto">
-        Everything you need to know about setting up GagaEmu, importing game backups, pairing controllers, and optimizing shaders.
-      </p>
-    </div>
-  </section>
-
-  <!-- Main Content -->
-  <main class="max-w-4xl mx-auto px-4 py-16 space-y-12">
-
-    <!-- TestFlight Beta Announcement -->
-    <div id="testflight" class="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-brand-600/20 via-indigo-600/10 to-brand-accent/20 border border-brand-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-      <div>
-        <div class="flex items-center gap-2 text-xs font-mono text-cyan-400 font-semibold uppercase">
-          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-          Apple TestFlight Public Beta
-        </div>
-        <h3 class="text-xl font-bold text-white mt-1">Join the GagaEmu TestFlight</h3>
-        <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-md">
-          Help us test pure interpreter performance across iOS and iPadOS hardware. Slots open weekly.
-        </p>
-      </div>
-      <a href="https://github.com/zenithblue-oss/gaga-emu/releases" target="_blank" rel="noopener" class="px-5 py-3 rounded-xl bg-white text-slate-900 font-bold text-xs hover:bg-slate-100 transition whitespace-nowrap shadow-lg shadow-white/5">
-        Request Invitation →
-      </a>
-    </div>
-
-    <!-- FAQ Accordion -->
-    <div class="space-y-6">
-      <h2 class="text-2xl font-bold text-white tracking-tight">Frequently Asked Questions</h2>
-
-      <!-- Q1 -->
-      <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
-        <h3 class="text-base font-bold text-white flex items-center justify-between">
-          <span>How does GagaEmu run fast without JIT (Just-In-Time compilation)?</span>
-          <span class="text-brand-400 font-mono text-xs">ARCH</span>
-        </h3>
-        <p class="mt-3 text-sm text-slate-400 leading-relaxed">
-          Apple strictly enforces W^X (Write XOR Execute) memory page protections on non-jailbroken devices, making standard JIT allocation illegal under App Store Rule 2.5.2. GagaEmu utilizes a heavily optimized <strong>direct-threaded opcode dispatcher</strong> with Clang tail-call elimination (<code class="text-brand-300 font-mono text-xs">[[clang::musttail]]</code>), pre-decoded instruction tables, and hand-tuned ARM64 NEON SIMD intrinsics. This achieves steady 60 FPS in retro 8-bit, 16-bit, and 32-bit platforms with zero JIT required.
-        </p>
-      </div>
-
-      <!-- Q2 -->
-      <div id="wifi" class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
-        <h3 class="text-base font-bold text-white flex items-center justify-between">
-          <span>How do I transfer game backups to my iPhone or iPad?</span>
-          <span class="text-emerald-400 font-mono text-xs">IMPORT</span>
-        </h3>
-        <div class="mt-3 text-sm text-slate-400 leading-relaxed space-y-2">
-          <p>GagaEmu provides multiple ways to ingest files into your sandboxed library:</p>
-          <ul class="list-disc list-inside space-y-1 text-slate-300">
-            <li><strong>Local WiFi Transfer:</strong> Open the "Import" tab and tap "Start WiFi Server". GagaEmu will display an IP address (e.g. <code class="text-emerald-300 font-mono text-xs">http://192.168.1.142:8080</code>). Open that URL in your PC or Mac browser to drag-and-drop game files directly.</li>
-            <li><strong>Apple Files App:</strong> Use the native iOS Files picker or iCloud Drive to import ROM files directly from your cloud storage.</li>
-            <li><strong>Clipboard Importer:</strong> Copy a URL or data stream to your clipboard and tap "Paste from Clipboard" in the Ingestion Hub.</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Q3 -->
-      <div id="controllers" class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
-        <h3 class="text-base font-bold text-white flex items-center justify-between">
-          <span>Which physical game controllers are supported?</span>
-          <span class="text-amber-400 font-mono text-xs">INPUT</span>
-        </h3>
-        <p class="mt-3 text-sm text-slate-400 leading-relaxed">
-          GagaEmu is built directly on Apple's <code class="text-amber-300 font-mono text-xs">GameController.framework</code>. It natively supports Sony PlayStation DualShock 4 and DualSense (PS5), Xbox Wireless Controllers, Nintendo Switch Joy-Cons (both paired dual and single horizontal modes), Switch Pro Controllers, Backbone One, Razer Kishi, and all MFi-certified gamepads. You can map up to 4 players simultaneously in the Controllers Modal.
-        </p>
-      </div>
-
-      <!-- Q4 -->
-      <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
-        <h3 class="text-base font-bold text-white flex items-center justify-between">
-          <span>How does the Multi-Core selection system work?</span>
-          <span class="text-violet-400 font-mono text-xs">CORES</span>
-        </h3>
-        <p class="mt-3 text-sm text-slate-400 leading-relaxed">
-          GagaEmu allows you to swap emulation cores both globally and per-game. For example, for Game Boy Advance you can run <strong>mGBA</strong> for cycle accuracy or <strong>gpSP</strong> for maximum battery savings. For PS1, switch between <strong>Beetle PSX HW</strong> and <strong>PCSX-ReARMed</strong>. Long-press any title in your library and select "Core Selection" to assign an override.
-        </p>
-      </div>
-
-      <!-- Q5 -->
-      <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
-        <h3 class="text-base font-bold text-white flex items-center justify-between">
-          <span>Can I apply translation patches and ROM hacks?</span>
-          <span class="text-cyan-400 font-mono text-xs">PATCH</span>
-        </h3>
-        <p class="mt-3 text-sm text-slate-400 leading-relaxed">
-          Yes! GagaEmu features an integrated in-memory ROM patcher supporting <strong>IPS, BPS, and UPS</strong> patch formats. In the Ingestion Hub, tap "ROM Patcher", select your base legally dumped ROM, select your patch file, and GagaEmu will generate and verify the patched title with automated CRC32/MD5 checksum checking.
-        </p>
-      </div>
-
-      <!-- Q6 -->
-      <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
-        <h3 class="text-base font-bold text-white flex items-center justify-between">
-          <span>Where are my save files located? Can I sync them across devices?</span>
-          <span class="text-rose-400 font-mono text-xs">STORAGE</span>
-        </h3>
-        <p class="mt-3 text-sm text-slate-400 leading-relaxed">
-          Your save states and battery save RAM (<code class="text-rose-300 font-mono text-xs">.srm / .sav</code>) are saved directly in the app's sandboxed Documents container accessible through the iOS Files app under "On My iPhone / GagaEmu". If enabled in Settings, saves are synchronized end-to-end through your private iCloud Drive container to all your iPads and iPhones.
-        </p>
-      </div>
-
-    </div>
-
-    <!-- Community & Issue Reporting -->
-    <div class="p-8 rounded-2xl bg-slate-900/80 border border-slate-800 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6">
-      <div>
-        <h3 class="text-lg font-bold text-white">Need more assistance?</h3>
-        <p class="text-xs sm:text-sm text-slate-400 mt-1">
-          Join our open source community or submit a bug report directly on our GitHub issue tracker.
-        </p>
-      </div>
-      <div class="flex items-center gap-3">
-        <a href="https://github.com/zenithblue-oss/gaga-emu/issues" target="_blank" rel="noopener" class="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs transition shadow-lg shadow-brand-500/20">
-          Open GitHub Issue
-        </a>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- Footer -->
-  <footer class="py-10 bg-[#080c14] border-t border-slate-800 text-xs text-slate-500 text-center">
-    <div class="max-w-7xl mx-auto px-4">
-      <p>© 2026 ZenithBlue OSS. Documentation & Support Portal.</p>
-      <div class="mt-2 flex items-center justify-center gap-4">
-        <a href="index.html" class="hover:text-slate-300">Home</a>
-        <span>•</span>
-        <a href="anti-piracy.html" class="hover:text-slate-300">Anti-Piracy Policy</a>
-        <span>•</span>
-        <a href="privacy.html" class="hover:text-slate-300">Privacy Policy</a>
-      </div>
-    </div>
-  </footer>
-
+<footer>
+  <div class="wrap">
+    <nav aria-label="Footer">
+      <a href="./">Home</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="anti-piracy.html">Legal and anti-piracy</a>
+      <a href="https://github.com/zenithblue-oss/gaga-emu">Source code</a>
+    </nav>
+    <p>© 2026 ZenithBlue. GagaEmu is open source under AGPL-3.0.</p>
+  </div>
+</footer>
 </body>
 </html>

@@ -1,684 +1,204 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth dark">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GagaEmu — Pure Interpreter Multi-System Retro Console Platform for iOS</title>
-  <meta name="description" content="Next-generation retro console emulator for iOS. 100% pure interpreter (Zero JIT), Apple Metal 3 graphics pipeline, and hot-swappable multi-core architecture.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace'],
-          },
-          colors: {
-            brand: {
-              50: '#eef2ff',
-              100: '#e0e7ff',
-              400: '#818cf8',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
-              accent: '#06b6d4',
-              surface: '#0f172a',
-              card: '#1e293b',
-              border: '#334155'
-            }
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    .gradient-glow {
-      background: radial-gradient(circle at 50% 20%, rgba(99, 102, 241, 0.15), rgba(6, 182, 212, 0.05) 50%, transparent 80%);
-    }
-    .glass-card {
-      background: rgba(30, 41, 59, 0.7);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .glass-card:hover {
-      border-color: rgba(99, 102, 241, 0.4);
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GagaEmu: a quiet shelf for your games</title>
+<meta name="description" content="GagaEmu plays homebrew and backups of the games you own on iPhone and iPad. Touch controls or a game controller, save states, filters. No games, ROMs or BIOS included.">
+<meta name="theme-color" content="#F4EFE6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16140F" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="GagaEmu: a quiet shelf for your games">
+<meta property="og:description" content="Play homebrew and the backups you own, on iPhone and iPad. No games, ROMs or BIOS included.">
+<meta property="og:url" content="https://zenithblue-oss.github.io/gaga-emu-site/">
+<meta property="og:image" content="https://zenithblue-oss.github.io/gaga-emu-site/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="GagaEmu, your games in one app: a phone in landscape running a space shooter with touch controls.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-[#0b0f19] text-slate-100 font-sans antialiased selection:bg-brand-500 selection:text-white">
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="img/favicon-32.png" srcset="img/apple-touch-icon.png 2x" alt="" width="30" height="30">GagaEmu</a>
+    <nav aria-label="Main">
+      <a href="#features">Features</a>
+      <a href="#systems">Systems</a>
+      <a href="#pro">Pro</a>
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
 
-  <!-- Navigation -->
-  <header class="sticky top-0 z-50 backdrop-blur-md bg-[#0b0f19]/80 border-b border-slate-800/80">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-3 group">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-indigo-500 to-brand-accent flex items-center justify-center shadow-lg shadow-brand-500/20 group-hover:scale-105 transition-transform duration-300">
-          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
-          </svg>
-        </div>
-        <div class="flex flex-col">
-          <span class="text-xl font-bold tracking-tight text-white flex items-center gap-1.5">
-            Gaga<span class="text-brand-400">Emu</span>
-          </span>
-          <span class="text-[10px] text-slate-400 -mt-1 font-mono uppercase tracking-wider">iOS Native</span>
-        </div>
-      </a>
-
-      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-        <a href="#features" class="hover:text-white transition-colors">Features</a>
-        <a href="#architecture" class="hover:text-white transition-colors">Zero-JIT Engine</a>
-        <a href="#gallery" class="hover:text-white transition-colors">Screenshots</a>
-        <a href="anti-piracy.html" class="hover:text-white transition-colors">Anti-Piracy</a>
-        <a href="privacy.html" class="hover:text-white transition-colors">Privacy</a>
-        <a href="support.html" class="hover:text-white transition-colors">Support & FAQ</a>
-      </nav>
-
-      <div class="flex items-center gap-3">
-        <a href="https://github.com/zenithblue-oss/gaga-emu" target="_blank" rel="noopener" class="p-2 text-slate-400 hover:text-white transition-colors" title="GitHub Source">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-          </svg>
-        </a>
-        <a href="#testflight" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white shadow-lg shadow-brand-500/25 transition-all">
-          <span>Join Beta</span>
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-        </a>
-      </div>
+<main id="main">
+<div class="hero">
+  <picture>
+    <source media="(min-width: 900px)" srcset="img/header-2400.webp">
+    <img src="img/header-1200.webp" width="1200" height="675" alt="GagaEmu, your games in one app: a phone in landscape runs a space shooter with on-screen touch controls, surrounded by game cover art." fetchpriority="high">
+  </picture>
+  <div class="wrap hero-text">
+    <h1 class="tick">A quiet shelf for your games.</h1>
+    <p>GagaEmu plays homebrew and backups of the cartridges and discs you own, on iPhone and iPad, in portrait or landscape. Touch controls or a game controller. Every system is free to play, with no ads and no sign-in.</p>
+    <div class="cta">
+      <span class="btn btn-solid soon" role="note">Coming soon to the App Store</span>
+      <a class="btn btn-line" href="https://github.com/zenithblue-oss/gaga-emu">Source code on GitHub</a>
     </div>
-  </header>
+  </div>
+</div>
 
-  <!-- Hero Section -->
-  <section class="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden gradient-glow">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-      
-      <!-- Pill Badge -->
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-medium tracking-wide mb-6">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        App Store Guideline 4.7 & 2.5.2 Compliant • Zero JIT
-      </div>
+<div class="notice">
+  <div class="wrap"><p><strong>No games included.</strong> GagaEmu comes with no games, ROMs or BIOS, and it does not sell, link to or help you get them. You add your own legally obtained files.</p></div>
+</div>
 
-      <!-- Main Headline -->
-      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-[1.1]">
-        Pure Retro Emulation. <br/>
-        <span class="bg-gradient-to-r from-brand-400 via-indigo-300 to-brand-accent bg-clip-text text-transparent">
-          Zero JIT. Native Metal.
-        </span>
-      </h1>
-
-      <p class="mt-6 text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
-        Engineered specifically for iOS & iPadOS. Experience multi-system classic gaming powered by direct-threaded interpreters, Apple Metal 3 CRT shaders, switchable cores, and native controller skinning.
-      </p>
-
-      <!-- App Store / TestFlight Badges -->
-      <div class="mt-8 flex flex-wrap items-center justify-center gap-4" id="testflight">
-        <a href="support.html#testflight" class="inline-flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white text-slate-900 font-semibold hover:bg-slate-100 transition shadow-xl shadow-white/5 group">
-          <svg class="w-6 h-6 text-blue-600" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
-          </svg>
-          <div class="text-left">
-            <div class="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Public Beta</div>
-            <div class="text-sm font-bold -mt-0.5">TestFlight Invitation</div>
-          </div>
-        </a>
-
-        <div class="inline-flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-slate-800/80 border border-slate-700/80 text-slate-300 font-semibold">
-          <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.56-.69.95-1.64.84-2.6-.82.03-1.83.56-2.42 1.25-.52.6-.98 1.57-.86 2.5.92.07 1.88-.47 2.44-1.15z"/>
-          </svg>
-          <div class="text-left">
-            <div class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">App Store</div>
-            <div class="text-sm font-bold -mt-0.5 text-white">Review In Progress</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Hero Device Mockup Preview -->
-      <div class="mt-14 max-w-5xl mx-auto px-4">
-        <div class="relative rounded-3xl p-2 bg-gradient-to-b from-slate-700/50 via-slate-800/20 to-transparent border border-slate-700/60 shadow-2xl">
-          <div class="rounded-2xl bg-[#0d1322] border border-slate-800 p-6 md:p-8 overflow-hidden text-left">
-            
-            <!-- Window header -->
-            <div class="flex items-center justify-between pb-6 border-b border-slate-800">
-              <div class="flex items-center gap-2">
-                <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
-                <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
-                <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
-                <span class="text-xs font-mono text-slate-400 ml-2">GagaEmu v1.0.0 (Unified iOS Host)</span>
-              </div>
-              <div class="flex items-center gap-3 text-xs font-mono text-slate-400">
-                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-cyan-400">
-                  <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span> Metal 3 Pipeline
-                </span>
-                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-emerald-400">
-                  No-JIT Interpreter
-                </span>
-              </div>
-            </div>
-
-            <!-- Dashboard Preview Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6">
-              
-              <!-- Console Card 1 -->
-              <div class="glass-card rounded-xl p-4 transition-all">
-                <div class="flex items-center justify-between mb-3">
-                  <span class="text-xs font-mono text-indigo-400 font-semibold uppercase">Sony PlayStation 1</span>
-                  <span class="px-2 py-0.5 text-[10px] rounded bg-indigo-500/20 text-indigo-300 font-mono">Beetle PSX HW</span>
-                </div>
-                <h4 class="text-sm font-semibold text-white">Dual Core Engine</h4>
-                <p class="text-xs text-slate-400 mt-1">Switch between Beetle PSX and PCSX-ReARMed on a per-game basis.</p>
-                <div class="mt-3 pt-3 border-t border-slate-700/50 flex items-center justify-between text-[11px] text-slate-400">
-                  <span>60 FPS Locked</span>
-                  <span class="text-emerald-400">Zero-JIT ARM64</span>
-                </div>
-              </div>
-
-              <!-- Console Card 2 -->
-              <div class="glass-card rounded-xl p-4 transition-all border-brand-500/30">
-                <div class="flex items-center justify-between mb-3">
-                  <span class="text-xs font-mono text-cyan-400 font-semibold uppercase">Game Boy Advance</span>
-                  <span class="px-2 py-0.5 text-[10px] rounded bg-cyan-500/20 text-cyan-300 font-mono">mGBA / gpSP</span>
-                </div>
-                <h4 class="text-sm font-semibold text-white">Real-Time CRT Shader</h4>
-                <p class="text-xs text-slate-400 mt-1">Metal 3 pixel pipeline with custom scanlines, curvature, and bloom.</p>
-                <div class="mt-3 pt-3 border-t border-slate-700/50 flex items-center justify-between text-[11px] text-slate-400">
-                  <span>Sub-16ms Audio</span>
-                  <span class="text-cyan-400">Direct MSL</span>
-                </div>
-              </div>
-
-              <!-- Console Card 3 -->
-              <div class="glass-card rounded-xl p-4 transition-all">
-                <div class="flex items-center justify-between mb-3">
-                  <span class="text-xs font-mono text-violet-400 font-semibold uppercase">Super Nintendo</span>
-                  <span class="px-2 py-0.5 text-[10px] rounded bg-violet-500/20 text-violet-300 font-mono">bsnes / Snes9x</span>
-                </div>
-                <h4 class="text-sm font-semibold text-white">Touch & Controller Engine</h4>
-                <p class="text-xs text-slate-400 mt-1">TriggerPro macro turbo buttons, skin parser, and 4-slot gamepad mapping.</p>
-                <div class="mt-3 pt-3 border-t border-slate-700/50 flex items-center justify-between text-[11px] text-slate-400">
-                  <span>MFi / DualSense</span>
-                  <span class="text-violet-400">Low-Latency</span>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-        </div>
-      </div>
-
+<section id="features">
+  <div class="wrap">
+    <p class="meta">What it does</p>
+    <h2 class="tick">Your library, your controls.</h2>
+    <p class="lede">Games sit on shelves by system. Continue keeps the last game one tap away. Play with touch buttons you can move and resize, or pair a controller.</p>
+    <div class="features">
+      <figure class="feature"><img src="img/iphone-02.webp" width="600" height="1304" loading="lazy" alt="A phone in landscape running a game, with touch buttons drawn over the edges of the picture."><figcaption><strong>Landscape, controls on top</strong><span>Touch buttons sit over the picture, never in its way.</span></figcaption></figure>
+      <figure class="feature"><img src="img/iphone-03.webp" width="600" height="1304" loading="lazy" alt="The library screen: a Continue card with a Play button above a grid of game covers."><figcaption><strong>One shelf for the games you own</strong><span>Your own covers, sorted the way you like.</span></figcaption></figure>
+      <figure class="feature"><img src="img/iphone-04.webp" width="600" height="1304" loading="lazy" alt="A game in portrait with a D-pad and face buttons below the picture."><figcaption><strong>Touch controls sized for thumbs</strong><span>Move, resize and fade every button.</span></figcaption></figure>
+      <figure class="feature"><img src="img/iphone-05.webp" width="600" height="1304" loading="lazy" alt="A phone in landscape running a racing game next to a wireless game controller."><figcaption><strong>Or pick up a controller</strong><span>Map every button, with turbo and macros.</span></figcaption></figure>
+      <figure class="feature"><img src="img/iphone-06.webp" width="600" height="1304" loading="lazy" alt="The Assign Skin sheet listing Standard, Low Reach and Two Button layouts."><figcaption><strong>A skin for every grip</strong><span>Standard, low reach or two big buttons. Two screens, too.</span></figcaption></figure>
+      <figure class="feature"><img src="img/iphone-07.webp" width="600" height="1304" loading="lazy" alt="The filter picker with a live preview of a game and filter thumbnails such as CRT."><figcaption><strong>CRT and LCD filters, live</strong><span>Try each one on your game before you pick.</span></figcaption></figure>
+      <figure class="feature"><img src="img/iphone-08.webp" width="600" height="1304" loading="lazy" alt="The Cheats sheet with a field to add a code and an option to import a .cht file."><figcaption><strong>Options and cheats per game</strong><span>Add a code or import a .cht file.</span></figcaption></figure>
+      <figure class="feature"><img src="img/iphone-09.webp" width="600" height="1304" loading="lazy" alt="Manage Saves listing save states, next to Storage and Sync settings with an iCloud Sync switch."><figcaption><strong>Saves, iCloud and Play Nearby</strong><span>Save states, game saves and sync across devices.</span></figcaption></figure>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Feature Grid -->
-  <section id="features" class="py-20 border-t border-slate-800 relative">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="text-center max-w-3xl mx-auto mb-16">
-        <h2 class="text-xs font-mono uppercase tracking-widest text-brand-400 font-semibold">Engine Architecture</h2>
-        <p class="mt-2 text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Engineered for Pure Compliance & Ultimate Performance
-        </p>
-        <p class="mt-4 text-slate-400 text-sm sm:text-base">
-          GagaEmu delivers 100% feature parity with premium iOS retro emulators while guaranteeing full adherence to App Store Review Guidelines.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        
-        <!-- Feature 1: No-JIT -->
-        <div class="glass-card rounded-2xl p-7 flex flex-col justify-between">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 mb-5">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-              </svg>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">No-JIT Interpreter Engine</h3>
-            <p class="text-sm text-slate-400 leading-relaxed">
-              Fully compliant with Apple W^X memory protection (Guideline 2.5.2). Employs direct-threaded instruction dispatch with tail-call optimization and ARM64 NEON SIMD intrinsics—zero executable code allocation.
-            </p>
-          </div>
-          <div class="mt-6 pt-4 border-t border-slate-800 text-xs font-mono text-indigo-300">
-            [[clang::musttail]] • App Store 4.7 Ready
-          </div>
-        </div>
-
-        <!-- Feature 2: Metal 3 -->
-        <div class="glass-card rounded-2xl p-7 flex flex-col justify-between">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 mb-5">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
-              </svg>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">Native Metal 3 Shaders</h3>
-            <p class="text-sm text-slate-400 leading-relaxed">
-              Zero MoltenVK overhead. High-performance Metal Shading Language (MSL) pipelines stream UMA textures with real-time CRT scanlines, curved geometry, bloom, and RetroArch preset support.
-            </p>
-          </div>
-          <div class="mt-6 pt-4 border-t border-slate-800 text-xs font-mono text-cyan-300">
-            MTLStorageModeShared • 60-120 Hz ProMotion
-          </div>
-        </div>
-
-        <!-- Feature 3: Multi-Core Switching -->
-        <div class="glass-card rounded-2xl p-7 flex flex-col justify-between">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 mb-5">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
-              </svg>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">Multi-Core Orchestration</h3>
-            <p class="text-sm text-slate-400 leading-relaxed">
-              Hot-swappable emulator cores per platform. Select the optimal engine for each title—bsnes vs Snes9x, Beetle PSX vs PCSX-ReARMed, mGBA vs gpSP—with persistent per-game override settings.
-            </p>
-          </div>
-          <div class="mt-6 pt-4 border-t border-slate-800 text-xs font-mono text-violet-300">
-            Unified C-ABI Bridge (`GagaBridge`)
-          </div>
-        </div>
-
-        <!-- Feature 4: Ingestion Hub -->
-        <div class="glass-card rounded-2xl p-7 flex flex-col justify-between">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-5">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
-              </svg>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">Complete Ingestion Hub</h3>
-            <p class="text-sm text-slate-400 leading-relaxed">
-              High-speed local WiFi HTTP upload server for dragging files from PC/Mac browsers, clipboard ROM extraction, MultiDisc M3U playlist manager, and in-memory IPS/BPS/UPS soft-patcher.
-            </p>
-          </div>
-          <div class="mt-6 pt-4 border-t border-slate-800 text-xs font-mono text-emerald-300">
-            LAN WiFi Server • ROM Soft-Patcher
-          </div>
-        </div>
-
-        <!-- Feature 5: Controller & Skins -->
-        <div class="glass-card rounded-2xl p-7 flex flex-col justify-between">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 mb-5">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
-              </svg>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">Controller & Touch Skins</h3>
-            <p class="text-sm text-slate-400 leading-relaxed">
-              Full 4-player hardware gamepad slot routing (PlayStation DualSense, Xbox, Switch Joy-Con, MFi). Customizable on-screen touch overlay engine supporting `.deltaskin` and TriggerPro turbo macros.
-            </p>
-          </div>
-          <div class="mt-6 pt-4 border-t border-slate-800 text-xs font-mono text-amber-300">
-            GameController.framework • TriggerPro
-          </div>
-        </div>
-
-        <!-- Feature 6: Adventurer Identity -->
-        <div class="glass-card rounded-2xl p-7 flex flex-col justify-between">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 mb-5">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-              </svg>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">Adventurer Identity & Cloud</h3>
-            <p class="text-sm text-slate-400 leading-relaxed">
-              Personal gamer card displaying active play time, joined date, unlocked retro avatars, play history timeline, and seamless iCloud Drive save state synchronization across all your Apple devices.
-            </p>
-          </div>
-          <div class="mt-6 pt-4 border-t border-slate-800 text-xs font-mono text-rose-300">
-            iCloud Sync • Playtime Telemetry
-          </div>
-        </div>
-
-      </div>
-
+<section>
+  <div class="wrap split">
+    <div>
+      <p class="meta">Adding files</p>
+      <h2 class="tick">Bring your own games.</h2>
+      <ul class="plain">
+        <li>Choose from Files, or drop files onto the Add screen.</li>
+        <li>WiFi Transfer sends files from a browser on your network. It is off by default, and its traffic is unencrypted.</li>
+        <li>Zip archives are unpacked on import.</li>
+        <li>Multi-Disc Helper joins disc files into one playlist.</li>
+        <li>Patch a ROM applies an IPS, UPS or BPS patch to a copy. The original is left untouched.</li>
+      </ul>
     </div>
-  </section>
+    <img src="img/search.webp" width="1600" height="1067" loading="lazy" alt="A phone in landscape running a space shooter, with cover art for several homebrew-style games floating around it.">
+  </div>
+</section>
 
-  <!-- Screenshots Gallery Section -->
-  <section id="gallery" class="py-20 bg-slate-900/40 border-t border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="text-center max-w-3xl mx-auto mb-16">
-        <h2 class="text-xs font-mono uppercase tracking-widest text-brand-400 font-semibold">User Experience</h2>
-        <p class="mt-2 text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Designed Exclusively for iOS & iPadOS
-        </p>
-        <p class="mt-4 text-slate-400 text-sm sm:text-base">
-          Every screen follows Apple Human Interface Guidelines with dark glassmorphism, fluid gestures, and instant feedback.
-        </p>
-      </div>
-
-      <!-- Gallery Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        
-        <!-- Screenshot Card 1 -->
-        <div class="glass-card rounded-2xl overflow-hidden group">
-          <div class="bg-gradient-to-br from-indigo-950/60 to-slate-900 p-6 h-64 flex flex-col justify-between border-b border-slate-800">
-            <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-              <span class="text-indigo-400 font-bold">LIBRARY TAB</span>
-              <span>iOS Native</span>
-            </div>
-            <div class="space-y-3">
-              <div class="flex items-center gap-2">
-                <span class="px-2.5 py-1 rounded-md bg-indigo-500/20 text-indigo-300 text-xs font-semibold">GBA</span>
-                <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-400 text-xs font-semibold">PS1</span>
-                <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-400 text-xs font-semibold">SNES</span>
-                <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-400 text-xs font-semibold">N64</span>
-              </div>
-              <div class="h-20 rounded-xl bg-slate-800/80 border border-slate-700/60 p-3 flex items-center justify-between">
-                <div>
-                  <div class="text-xs font-bold text-white">Classic Collection</div>
-                  <div class="text-[11px] text-slate-400 mt-0.5">Direct launch with auto-resume state</div>
-                </div>
-                <div class="w-8 h-8 rounded-lg bg-indigo-600/30 flex items-center justify-center text-indigo-400">▶</div>
-              </div>
-            </div>
-            <div class="text-[11px] font-mono text-slate-400 flex justify-between">
-              <span>Clean Game Grid</span>
-              <span class="text-emerald-400">No ROMs Included</span>
-            </div>
-          </div>
-          <div class="p-5">
-            <h4 class="font-bold text-white text-base">Main Games Library</h4>
-            <p class="text-xs text-slate-400 mt-1">Platform-sorted collections, cover art caching, and single-tap instant resume.</p>
-          </div>
-        </div>
-
-        <!-- Screenshot Card 2 -->
-        <div class="glass-card rounded-2xl overflow-hidden group">
-          <div class="bg-gradient-to-br from-cyan-950/60 to-slate-900 p-6 h-64 flex flex-col justify-between border-b border-slate-800">
-            <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-              <span class="text-cyan-400 font-bold">CORE SWITCHER</span>
-              <span>Long-Press Override</span>
-            </div>
-            <div class="space-y-2">
-              <div class="p-2.5 rounded-lg bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-between text-xs">
-                <span class="font-semibold text-white">mGBA (Cycle Accurate)</span>
-                <span class="text-cyan-300 font-mono text-[10px]">Active</span>
-              </div>
-              <div class="p-2.5 rounded-lg bg-slate-800/60 border border-slate-700 text-slate-300 flex items-center justify-between text-xs">
-                <span>gpSP (High Speed Low Battery)</span>
-                <span class="text-slate-400 font-mono text-[10px]">Standby</span>
-              </div>
-            </div>
-            <div class="text-[11px] font-mono text-slate-400 flex justify-between">
-              <span>Per-Game Settings</span>
-              <span class="text-cyan-400">Hot-Swappable</span>
-            </div>
-          </div>
-          <div class="p-5">
-            <h4 class="font-bold text-white text-base">Dynamic Core Selection</h4>
-            <p class="text-xs text-slate-400 mt-1">Choose between cycle-accurate simulation and low-power speed engines.</p>
-          </div>
-        </div>
-
-        <!-- Screenshot Card 3 -->
-        <div class="glass-card rounded-2xl overflow-hidden group">
-          <div class="bg-gradient-to-br from-violet-950/60 to-slate-900 p-6 h-64 flex flex-col justify-between border-b border-slate-800">
-            <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-              <span class="text-violet-400 font-bold">SHADER STUDIO</span>
-              <span>Metal 3 Real-Time</span>
-            </div>
-            <div class="space-y-2">
-              <div class="grid grid-cols-3 gap-2 text-center text-[10px] font-mono">
-                <div class="p-2 rounded bg-violet-500/20 text-violet-200 border border-violet-500/40">Geom CRT</div>
-                <div class="p-2 rounded bg-slate-800 text-slate-400">CRT v2</div>
-                <div class="p-2 rounded bg-slate-800 text-slate-400">Scanlines</div>
-              </div>
-              <div class="p-2 rounded bg-slate-800/80 border border-slate-700 text-[11px] text-slate-300">
-                Live shader preview with adjustable curvature, mask intensity, and phosphor decay.
-              </div>
-            </div>
-            <div class="text-[11px] font-mono text-slate-400 flex justify-between">
-              <span>120Hz ProMotion</span>
-              <span class="text-violet-400">Direct MSL</span>
-            </div>
-          </div>
-          <div class="p-5">
-            <h4 class="font-bold text-white text-base">Real-Time Shader Suite</h4>
-            <p class="text-xs text-slate-400 mt-1">Authentic CRT phosphor simulation, scanlines, and RetroArch preset support.</p>
-          </div>
-        </div>
-
-        <!-- Screenshot Card 4 -->
-        <div class="glass-card rounded-2xl overflow-hidden group">
-          <div class="bg-gradient-to-br from-emerald-950/60 to-slate-900 p-6 h-64 flex flex-col justify-between border-b border-slate-800">
-            <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-              <span class="text-emerald-400 font-bold">INGESTION HUB</span>
-              <span>Local Network</span>
-            </div>
-            <div class="space-y-2">
-              <div class="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-xs">
-                <div class="font-mono text-emerald-300 font-semibold">http://192.168.1.142:8080</div>
-                <div class="text-[11px] text-slate-400 mt-0.5">Drag-and-drop web transfer ready</div>
-              </div>
-              <div class="grid grid-cols-2 gap-2 text-[10px] font-mono">
-                <div class="p-1.5 rounded bg-slate-800 text-center text-slate-300">ROM Patcher</div>
-                <div class="p-1.5 rounded bg-slate-800 text-center text-slate-300">MultiDisc M3U</div>
-              </div>
-            </div>
-            <div class="text-[11px] font-mono text-slate-400 flex justify-between">
-              <span>Zero Cables</span>
-              <span class="text-emerald-400">Clipboard Import</span>
-            </div>
-          </div>
-          <div class="p-5">
-            <h4 class="font-bold text-white text-base">Ingestion Hub & Tools</h4>
-            <p class="text-xs text-slate-400 mt-1">Browser WiFi file transfer, M3U disc bundle generator, and IPS/BPS patcher.</p>
-          </div>
-        </div>
-
-        <!-- Screenshot Card 5 -->
-        <div class="glass-card rounded-2xl overflow-hidden group">
-          <div class="bg-gradient-to-br from-amber-950/60 to-slate-900 p-6 h-64 flex flex-col justify-between border-b border-slate-800">
-            <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-              <span class="text-amber-400 font-bold">CONTROLLERS</span>
-              <span>GameController.framework</span>
-            </div>
-            <div class="space-y-2">
-              <div class="p-2 rounded-lg bg-amber-500/20 border border-amber-500/30 flex justify-between items-center text-xs">
-                <span class="font-semibold text-white">Player 1: DualSense Wireless</span>
-                <span class="text-emerald-400 font-mono text-[10px]">Connected</span>
-              </div>
-              <div class="p-2 rounded-lg bg-slate-800 text-xs text-slate-400 flex justify-between items-center">
-                <span>Player 2: Touch Overlay</span>
-                <span class="text-slate-400 font-mono text-[10px]">Active</span>
-              </div>
-            </div>
-            <div class="text-[11px] font-mono text-slate-400 flex justify-between">
-              <span>TriggerPro Turbo</span>
-              <span class="text-amber-400">4-Player Support</span>
-            </div>
-          </div>
-          <div class="p-5">
-            <h4 class="font-bold text-white text-base">Controller & Slot Manager</h4>
-            <p class="text-xs text-slate-400 mt-1">4-player mapping, DualSense / Xbox / Joy-Con pairing, and skin overlays.</p>
-          </div>
-        </div>
-
-        <!-- Screenshot Card 6 -->
-        <div class="glass-card rounded-2xl overflow-hidden group">
-          <div class="bg-gradient-to-br from-rose-950/60 to-slate-900 p-6 h-64 flex flex-col justify-between border-b border-slate-800">
-            <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-              <span class="text-rose-400 font-bold">ADVENTURER CARD</span>
-              <span>Gamer Passport</span>
-            </div>
-            <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-800/80 border border-slate-700">
-              <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-rose-500 to-indigo-500 flex items-center justify-center font-bold text-white">
-                G
-              </div>
-              <div>
-                <div class="text-xs font-bold text-white">Adventurer</div>
-                <div class="text-[10px] text-slate-400 font-mono">148 Hours Played • Level 12</div>
-              </div>
-            </div>
-            <div class="text-[11px] font-mono text-slate-400 flex justify-between">
-              <span>Play History</span>
-              <span class="text-rose-400">iCloud Backup</span>
-            </div>
-          </div>
-          <div class="p-5">
-            <h4 class="font-bold text-white text-base">Adventurer Identity</h4>
-            <p class="text-xs text-slate-400 mt-1">Personal gamer profile, play history timeline, and secure iCloud synchronization.</p>
-          </div>
-        </div>
-
-      </div>
-
+<section>
+  <div class="wrap split rev">
+    <div>
+      <p class="meta">iPhone and iPad</p>
+      <h2 class="tick">Room to play on iPad.</h2>
+      <p>The same shelf, controls and saves on the big screen, upright or sideways. Save states, fast forward and rewind (where the system supports it) live in the pause menu.</p>
     </div>
-  </section>
+    <img class="tall" src="img/ipad-01.webp" width="1200" height="1600" loading="lazy" alt="GagaEmu on iPad: the headline Your games. One app. above game cover art and a phone running a game.">
+  </div>
+</section>
 
-  <!-- Technical Specs Comparison -->
-  <section id="architecture" class="py-20 border-t border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="text-center max-w-3xl mx-auto mb-16">
-        <h2 class="text-xs font-mono uppercase tracking-widest text-brand-400 font-semibold">Technical Architecture</h2>
-        <p class="mt-2 text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-          How GagaEmu Complies with Apple Rules
-        </p>
-        <p class="mt-4 text-slate-400 text-sm sm:text-base">
-          Comparison between standard desktop/sideloaded emulator approaches and GagaEmu's compliant native architecture.
-        </p>
-      </div>
+<div class="covers" aria-hidden="true">
+  <img src="img/art-cover-01.webp" alt="" width="900" height="502" loading="lazy">
+  <img src="img/art-cover-02.webp" alt="" width="900" height="502" loading="lazy">
+  <img src="img/art-cover-04.webp" alt="" width="900" height="502" loading="lazy">
+  <img src="img/art-cover-05.webp" alt="" width="900" height="502" loading="lazy">
+  <img src="img/art-cover-06.webp" alt="" width="900" height="502" loading="lazy">
+  <img src="img/art-cover-07.webp" alt="" width="900" height="502" loading="lazy">
+  <img src="img/art-cover-08.webp" alt="" width="900" height="502" loading="lazy">
+</div>
 
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm border-collapse">
-          <thead>
-            <tr class="border-b border-slate-800 bg-slate-900/60 text-slate-300 font-mono text-xs uppercase">
-              <th class="py-4 px-6">Architectural Pillar</th>
-              <th class="py-4 px-6 text-brand-400">GagaEmu (Compliant Native)</th>
-              <th class="py-4 px-6 text-slate-500">Legacy / Sideloaded Ports</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-800/80 font-normal">
-            <tr class="hover:bg-slate-800/20">
-              <td class="py-4 px-6 font-semibold text-white">JIT / Code Execution</td>
-              <td class="py-4 px-6 text-emerald-400 font-mono text-xs">Pure Interpreter + Direct-Threaded [[musttail]] (Zero JIT)</td>
-              <td class="py-4 px-6 text-rose-400 font-mono text-xs">Runtime JIT (Fails W^X without debugger/AltJIT)</td>
-            </tr>
-            <tr class="hover:bg-slate-800/20">
-              <td class="py-4 px-6 font-semibold text-white">App Store Compliance</td>
-              <td class="py-4 px-6 text-emerald-400 font-mono text-xs">100% compliant with Rules 4.7 and 2.5.2</td>
-              <td class="py-4 px-6 text-rose-400 font-mono text-xs">Violates Rule 2.5.2 (PROT_EXEC blocked)</td>
-            </tr>
-            <tr class="hover:bg-slate-800/20">
-              <td class="py-4 px-6 font-semibold text-white">Graphics Backend</td>
-              <td class="py-4 px-6 text-emerald-400 font-mono text-xs">Direct Apple Metal 3 Pipeline (Zero MoltenVK overhead)</td>
-              <td class="py-4 px-6 text-slate-400 font-mono text-xs">OpenGL ES / MoltenVK translation layer</td>
-            </tr>
-            <tr class="hover:bg-slate-800/20">
-              <td class="py-4 px-6 font-semibold text-white">Core Architecture</td>
-              <td class="py-4 px-6 text-emerald-400 font-mono text-xs">Dynamic C-ABI Bridge (`GagaBridge`) with per-game override</td>
-              <td class="py-4 px-6 text-slate-400 font-mono text-xs">Hard-coded single core or monolithic RetroArch C</td>
-            </tr>
-            <tr class="hover:bg-slate-800/20">
-              <td class="py-4 px-6 font-semibold text-white">File Ingestion</td>
-              <td class="py-4 px-6 text-emerald-400 font-mono text-xs">LAN WiFi Server + Clipboard + MultiDisc M3U + RomPatcher</td>
-              <td class="py-4 px-6 text-slate-400 font-mono text-xs">Manual iTunes File Sharing or basic Files picker</td>
-            </tr>
-            <tr class="hover:bg-slate-800/20">
-              <td class="py-4 px-6 font-semibold text-white">Input & Haptics</td>
-              <td class="py-4 px-6 text-emerald-400 font-mono text-xs">GameController.framework (4-Player) + TriggerPro Turbo + Skins</td>
-              <td class="py-4 px-6 text-slate-400 font-mono text-xs">Basic touch buttons with rigid static layout</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+<section id="systems">
+  <div class="wrap">
+    <p class="meta">Systems</p>
+    <h2 class="tick">29 systems, 31 cores.</h2>
+    <p class="lede">Every core runs as an interpreter. None uses JIT, a dynamic recompiler or writable executable memory. Speed depends on your device and the software you load.</p>
+    <ul class="systems">
+      <li>Game Boy Advance<span>mGBA</span></li>
+      <li>Game Boy / Game Boy Color<span>mGBA</span></li>
+      <li>NES<span>Nestopia UE</span></li>
+      <li>SNES / Super Famicom<span>bsnes</span></li>
+      <li>Genesis / Mega Drive / Mega-CD<span>JGenesis</span></li>
+      <li>PlayStation<span>PCSX-ReARMed, Beetle PSX HW, SwanStation</span></li>
+      <li>Nintendo DS<span>melonDS DS</span></li>
+      <li>Saturn<span>Beetle Saturn</span></li>
+      <li>Nintendo 64<span>Mupen64Plus-Next</span></li>
+      <li>PSP<span>PPSSPP</span></li>
+      <li>Dreamcast<span>Flycast</span></li>
+      <li>Nintendo 3DS (experimental)<span>Azahar</span></li>
+      <li>Arcade<span>MAME</span></li>
+      <li>DOS / Windows 9x<span>DOSBox Pure</span></li>
+      <li>PC Engine / TurboGrafx-16 / CD<span>Beetle PCE Fast</span></li>
+      <li>SuperGrafx<span>Beetle SuperGrafx</span></li>
+      <li>Virtual Boy<span>Beetle VB</span></li>
+      <li>Neo Geo Pocket / Color<span>Beetle NeoPop</span></li>
+      <li>WonderSwan / Color<span>Beetle Cygne</span></li>
+      <li>Pokémon Mini<span>PokeMini</span></li>
+      <li>Master System / Game Gear / SG-1000<span>Gearsystem</span></li>
+      <li>Atari 2600<span>Stella</span></li>
+      <li>Atari 7800<span>ProSystem</span></li>
+      <li>Atari Lynx<span>Handy</span></li>
+      <li>Atari 5200 / 8-bit<span>Atari800</span></li>
+      <li>Atari Jaguar<span>Virtual Jaguar</span></li>
+      <li>Commodore 64<span>VICE</span></li>
+      <li>Amiga<span>PUAE</span></li>
+      <li>Doom (WAD)<span>PrBoom</span></li>
+    </ul>
+    <p class="small">Some systems need a BIOS file, which you supply yourself. System names are trademarks of their owners. GagaEmu is an independent project, not affiliated with, endorsed by or sponsored by any console maker.</p>
+  </div>
+</section>
 
+<section id="pro">
+  <div class="wrap">
+    <p class="meta">GagaEmu Pro</p>
+    <h2 class="tick">Free to play. Pro if you want more.</h2>
+    <p class="lede">Every system and core is free, with no ads and no sign-in. GagaEmu Pro is optional and funds development.</p>
+    <div class="tiers">
+      <div class="tier"><img src="img/pro-monthly.webp" width="360" height="360" loading="lazy" alt=""><h3>Monthly</h3><p>A subscription, renewed each month.</p></div>
+      <div class="tier"><img src="img/pro-yearly.webp" width="360" height="360" loading="lazy" alt=""><h3>Yearly</h3><p>A subscription, renewed each year.</p></div>
+      <div class="tier"><img src="img/pro-forever.webp" width="360" height="360" loading="lazy" alt=""><h3>Forever</h3><p>A one-time purchase.</p></div>
     </div>
-  </section>
+    <p>Pro adds:</p>
+    <ul class="plain">
+      <li>Fast forward above 2x</li>
+      <li>More than 4 save states and 5 cheats per game</li>
+      <li>Players 3 and 4</li>
+      <li>The full filter catalogue</li>
+      <li>iCloud sync</li>
+      <li>Extra app icons and accent colours</li>
+    </ul>
+    <p class="small">Prices are shown in the app. Nothing you made is removed if Pro ends. Purchases go through Apple and can be restored from Settings.</p>
+  </div>
+</section>
 
-  <!-- Legal Notice Strip -->
-  <section class="py-12 bg-amber-500/10 border-y border-amber-500/20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6">
-      <div class="flex items-center gap-4">
-        <div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-          </svg>
-        </div>
-        <div>
-          <h4 class="text-base font-bold text-white">Strict Anti-Piracy Policy & Legal Disclaimer</h4>
-          <p class="text-xs text-slate-300 mt-1 max-w-2xl">
-            GagaEmu does NOT contain, distribute, link to, or promote copyrighted ROMs, ISOs, or proprietary BIOS images. Users must dump their own physical games.
-          </p>
-        </div>
-      </div>
-      <a href="anti-piracy.html" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold bg-amber-500 text-slate-950 hover:bg-amber-400 transition whitespace-nowrap shadow-lg shadow-amber-500/20">
-        Read Legal Disclaimer →
-      </a>
-    </div>
-  </section>
+<section id="faq">
+  <div class="wrap">
+    <p class="meta">Questions</p>
+    <h2 class="tick">FAQ</h2>
+    <details><summary>Does GagaEmu include any games or BIOS?</summary><p>No. GagaEmu ships with no games, ROMs or BIOS. It does not sell, link to or help you obtain them. Use homebrew, or backups of cartridges and discs you own.</p></details>
+    <details><summary>Does it use JIT?</summary><p>No. Every core is built as an interpreter, with no JIT, dynamic recompiler or writable executable memory. You do not need to enable anything special on your device.</p></details>
+    <details><summary>Which controllers work?</summary><p>Game controllers supported by iOS, including MFi, DualShock 4, DualSense, Xbox and Joy-Con controllers, plus hardware keyboards.</p></details>
+    <details><summary>Is it open source?</summary><p>Yes. GagaEmu is free software under the GNU Affero General Public License 3.0. Bundled cores keep their own licences, listed in Settings &gt; About &gt; Licences. <a href="https://github.com/zenithblue-oss/gaga-emu">Source code</a>.</p></details>
+    <details><summary>Does it collect my data?</summary><p>No accounts, analytics, advertising or tracking. Read the <a href="privacy.html">privacy policy</a> for the optional features that talk to a server.</p></details>
+    <details><summary>When can I get it?</summary><p>GagaEmu is coming soon to the App Store. It is in early development, and we make no promise that any particular title will run.</p></details>
+    <p style="margin-top:24px">More answers on the <a href="support.html">support page</a>.</p>
+  </div>
+</section>
+</main>
 
-  <!-- Footer -->
-  <footer class="py-14 bg-[#080c14] border-t border-slate-800/80 text-xs text-slate-400">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-        <div>
-          <h5 class="text-white font-semibold mb-3 font-mono text-xs uppercase">Product</h5>
-          <ul class="space-y-2">
-            <li><a href="#features" class="hover:text-white transition">Features</a></li>
-            <li><a href="#architecture" class="hover:text-white transition">Zero-JIT Engine</a></li>
-            <li><a href="#gallery" class="hover:text-white transition">Screenshots</a></li>
-            <li><a href="support.html#testflight" class="hover:text-white transition">TestFlight Beta</a></li>
-          </ul>
-        </div>
-        <div>
-          <h5 class="text-white font-semibold mb-3 font-mono text-xs uppercase">Compliance & Legal</h5>
-          <ul class="space-y-2">
-            <li><a href="anti-piracy.html" class="hover:text-white transition">Anti-Piracy Policy</a></li>
-            <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy (Rule 5.1.1)</a></li>
-            <li><a href="anti-piracy.html#dmca" class="hover:text-white transition">DMCA & Copyright Notice</a></li>
-          </ul>
-        </div>
-        <div>
-          <h5 class="text-white font-semibold mb-3 font-mono text-xs uppercase">Community & Help</h5>
-          <ul class="space-y-2">
-            <li><a href="support.html" class="hover:text-white transition">User Guide & FAQ</a></li>
-            <li><a href="support.html#wifi" class="hover:text-white transition">WiFi Import Setup</a></li>
-            <li><a href="support.html#controllers" class="hover:text-white transition">Controller Pairing</a></li>
-            <li><a href="https://github.com/zenithblue-oss/gaga-emu/issues" class="hover:text-white transition">Issue Tracker</a></li>
-          </ul>
-        </div>
-        <div>
-          <h5 class="text-white font-semibold mb-3 font-mono text-xs uppercase">Open Source</h5>
-          <p class="text-slate-400 text-xs leading-relaxed mb-3">
-            Maintained by ZenithBlue OSS. Built natively with Swift, SwiftUI, and Apple Metal 3.
-          </p>
-          <a href="https://github.com/zenithblue-oss" target="_blank" rel="noopener" class="text-brand-400 hover:text-brand-300 font-semibold font-mono text-xs">
-            github.com/zenithblue-oss →
-          </a>
-        </div>
-      </div>
-
-      <div class="pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-        <div>
-          <p>© 2026 ZenithBlue OSS. Released under open-source licenses.</p>
-          <p class="text-[11px] text-slate-400 mt-1">
-            GagaEmu is not affiliated with, authorized, endorsed, or sponsored by Nintendo, Sony, Sega, Microsoft, or Apple Inc. All console trademarks belong to their respective owners.
-          </p>
-        </div>
-        <div class="flex items-center gap-4">
-          <a href="anti-piracy.html" class="hover:text-white transition">Anti-Piracy</a>
-          <span>•</span>
-          <a href="privacy.html" class="hover:text-white transition">Privacy</a>
-          <span>•</span>
-          <a href="support.html" class="hover:text-white transition">Support</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
+<footer>
+  <div class="wrap">
+    <nav aria-label="Footer">
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="anti-piracy.html">Legal and anti-piracy</a>
+      <a href="https://github.com/zenithblue-oss/gaga-emu">Source code</a>
+    </nav>
+    <p>© 2026 ZenithBlue. GagaEmu is open source under AGPL-3.0. All trademarks belong to their owners.</p>
+  </div>
+</footer>
 </body>
 </html>
