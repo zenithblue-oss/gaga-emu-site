@@ -29,6 +29,7 @@
       <a href="#features">Features</a>
       <a href="#systems">Systems</a>
       <a href="#pro">Pro</a>
+      <a href="#sideload">Sideload</a>
       <a href="support.html">Support</a>
       <a href="privacy.html">Privacy</a>
     </nav>
@@ -114,8 +115,8 @@
 <section id="systems">
   <div class="wrap">
     <p class="meta">Systems</p>
-    <h2 class="tick">29 systems, 31 cores.</h2>
-    <p class="lede">Every core runs as an interpreter. None uses JIT, a dynamic recompiler or writable executable memory. Speed depends on your device and the software you load.</p>
+    <h2 class="tick">29 systems, 30 cores.</h2>
+    <p class="lede">In the App Store version every core runs as an interpreter. None uses JIT, a dynamic recompiler or writable executable memory. Speed depends on your device and the software you load.</p>
     <ul class="systems">
       <li>Game Boy Advance<span>mGBA</span></li>
       <li>Game Boy / Game Boy Color<span>mGBA</span></li>
@@ -174,12 +175,24 @@
   </div>
 </section>
 
+<section id="sideload">
+  <div class="wrap">
+    <p class="meta">Sideload with JIT</p>
+    <h2 class="tick">For advanced users.</h2>
+    <p class="lede">A separate, unsigned pre-release build with JIT for PPSSPP, melonDS, PCSX ReARMed, SwanStation, Beetle PSX, Mupen64Plus-Next, Flycast, Azahar, DOSBox Pure and PicoDrive. All Pro features are free in it. Install it with SideStore and enable JIT with StikDebug and universal.js. It is not on the App Store or TestFlight, and the App Store version has no JIT.</p>
+    <div class="cta">
+      <a class="btn btn-solid" href="https://github.com/zenithblue-dev/gaga-emu/releases/tag/v1.0.0-jit">Download the JIT pre-release</a>
+      <a class="btn btn-line" href="https://github.com/zenithblue-dev/gaga-emu/blob/main/docs/release/INSTALL-JIT.md">Install guide</a>
+    </div>
+  </div>
+</section>
+
 <section id="faq">
   <div class="wrap">
     <p class="meta">Questions</p>
     <h2 class="tick">FAQ</h2>
     <details><summary>Does GagaEmu include any games or BIOS?</summary><p>No. GagaEmu ships with no games, ROMs or BIOS. It does not sell, link to or help you obtain them. Use homebrew, or backups of cartridges and discs you own.</p></details>
-    <details><summary>Does it use JIT?</summary><p>No. Every core is built as an interpreter, with no JIT, dynamic recompiler or writable executable memory. You do not need to enable anything special on your device.</p></details>
+    <details><summary>Does it use JIT?</summary><p>Not the App Store version. Every core is built as an interpreter, with no JIT, dynamic recompiler or writable executable memory. You do not need to enable anything special on your device. An optional <a href="#sideload">sideload build</a> for advanced users does use JIT.</p></details>
     <details><summary>Which controllers work?</summary><p>Game controllers supported by iOS, including MFi, DualShock 4, DualSense, Xbox and Joy-Con controllers, plus hardware keyboards.</p></details>
     <details><summary>Is it open source?</summary><p>Yes. GagaEmu is free software under the GNU Affero General Public License 3.0. Bundled cores keep their own licences, listed in Settings &gt; About &gt; Licences. <a href="https://github.com/zenithblue-dev/gaga-emu">Source code</a>.</p></details>
     <details><summary>Does it collect my data?</summary><p>No accounts, analytics, advertising or tracking. Read the <a href="privacy.html">privacy policy</a> for the optional features that talk to a server.</p></details>
